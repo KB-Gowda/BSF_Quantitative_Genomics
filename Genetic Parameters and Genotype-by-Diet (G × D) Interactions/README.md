@@ -4,7 +4,7 @@ This repository contains the analysis scripts used to evaluate phenotypic variat
 
 ## Analyses
 
-### 1. Descriptive Statistics and Fixed-Effect Analysis (GLM) — SAS
+### 1. Descriptive Statistics and Fixed-Effect Analysis (GLM) - SAS
 
 Phenotypic descriptive statistics and fixed-effect analyses were performed using SAS.
 
@@ -17,7 +17,7 @@ The analyses evaluated the effects of:
 
 Descriptive statistics, least-squares means, significance tests, and coefficients of determination were obtained for larval body weight (LBW), larval length (LL), larval width (LW), and larval surface area (LSA).
 
-### 2. Population Structure — PCA
+### 2. Population Structure - PCA
 
 Principal component analysis (PCA) was performed using PLINK on the QC-filtered genotype dataset.
 
@@ -25,7 +25,7 @@ The first two principal components were visualised in R using `ggplot2` to asses
 
 The PCA was conducted using the same QC-filtered individuals used for construction of the genomic relationship matrix and subsequent genetic analyses.
 
-### 3. Genetic Parameter Estimation — R
+### 3. Genetic Parameter Estimation - R
 
 Genetic parameter analyses were performed in R using `ASReml-R`.
 
@@ -39,7 +39,7 @@ The analyses included:
 
 The models were used to estimate additive genetic variance, dominance variance, residual variance, heritability, dominance ratios, and genetic, dominance, residual, and phenotypic correlations for the growth traits.
 
-### 4. Genotype × Diet Interaction — R
+### 4. Genotype × Diet Interaction - R
 
 Genotype × diet interactions were estimated using multivariate genomic models implemented in `ASReml-R`.
 
@@ -61,7 +61,7 @@ Lower genetic correlations indicate greater genotype re-ranking between diets an
 
 Diet-specific heritabilities were estimated from both the multivariate G × D models and the univariate additive and additive–dominance models.
 
-### 5. GEBV Extraction and Reaction-Norm Plots — R
+### 5. GEBV Extraction and Reaction-Norm Plots - R
 
 Diet-specific genomic estimated breeding values (GEBVs) were extracted from the multivariate G × D models and stored as CSV files.
 

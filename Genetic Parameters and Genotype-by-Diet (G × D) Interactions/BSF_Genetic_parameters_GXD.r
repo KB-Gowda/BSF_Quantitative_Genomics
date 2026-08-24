@@ -1,6 +1,6 @@
 # ==============================================================================
 # Title: Estimation of Genetic Parameters and Genotype-by-Diet (G × D) Interactions
-#        for Growth Traits in Australian Black soldier fly (Hermetia illucens)
+#        for Growth Traits in Australian Black soldier fly larvae (Hermetia illucens)
 # Author: Kishor B. Gowda
 # Date: 2026-08-21
 # ==============================================================================
@@ -22,12 +22,12 @@ library(MCMCglmm)
 # ------------------------------------------------------------------------------
 # 2. Define Paths & Quality Control Filtering (PLINK)
 # ------------------------------------------------------------------------------
-plink_path <- "C:/Plink/plink.exe"  #(Change to your local path if different)
+plink_path <- "C:/Plink/plink.exe"  #(Change to your local path)
 
 # Perform SNP and sample quality control using PLINK
 system(paste(
   plink_path, "--bfile BSF_geno_2097_5562", "--allow-extra-chr", "--make-bed",
-  "--geno 0.1", "--mind 0.10", "--maf 0.005",
+  "--geno 0.1", "--mind 0.1", "--maf 0.005",
   "--recode A", "--out BSF_geno_2083_4680"
 ))
 

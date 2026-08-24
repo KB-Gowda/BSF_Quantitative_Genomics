@@ -9,6 +9,8 @@
 # 1. Load Required Packages
 # ------------------------------------------------------------------------------
 library(data.table)
+library(dplyr)
+library(readr)
 library(ggplot2)
 library(readxl)
 library(snpReady)
@@ -418,11 +420,12 @@ for (tr in primary_traits) {
 }
 
 # ==============================================================================
-# PART 4: REACTION NORM PLOTTING (TOP 5% GEBVs)
+# PART 4: REACTION NORM PLOTTING (TOP 5% GEBVs PER TRAIT)
 # ==============================================================================
-library(dplyr)
-library(ggplot2)
-library(readr)
+
+# ------------------------------------------------------------------------------
+# 14. Reaction norm plotting with GEBVs
+# ------------------------------------------------------------------------------
 
 # Read exported CSV files and label traits
 GEBV_weight  <- read_csv("GEBV_Weight.csv")      %>% mutate(TraitName = "LBW")
@@ -433,44 +436,46 @@ GEBV_surface <- read_csv("GEBV_SurfaceArea.csv") %>% mutate(TraitName = "LSA")
 # Combine datasets
 GEBV_all <- bind_rows(GEBV_weight, GEBV_length, GEBV_width, GEBV_surface)
 
-# Clean and center GEBVs
-GEBV_plot <- GEBV_all %>%
+# Clean and format diet labels
+GEBV_clean <- GEBV_all %>%
   mutate(
     Sample_Id = sub("^_", "", Sample_Id),
     diet = case_when(
       grepl("BSG", Trait) ~ "BSG",
       grepl("SYK", Trait) ~ "SYK",
-      grepl("FVW", Trait) ~ "FVW",
+      grepl("FVW|VEG", Trait) ~ "FVW",
       TRUE ~ NA_character_
     ),
     diet = factor(diet, levels = c("BSG", "FVW", "SYK")),
     TraitName = factor(TraitName, levels = c("LBW", "LL", "LW", "LSA"))
   ) %>%
-  filter(!is.na(diet)) %>%
+  filter(!is.na(diet))
+
+# Zero-center solutions within each Trait x Diet environment
+GEBV_centered <- GEBV_clean %>%
   group_by(TraitName, diet) %>%
-  mutate(solution = solution - mean(solution, na.rm = TRUE)) %>%
+  mutate(solution_centered = solution - mean(solution, na.rm = TRUE)) %>%
   ungroup()
 
-# Select top 5% individuals per trait based on overall mean GEBV
-top_individuals <- GEBV_plot %>%
+# Rank and isolate Top 5% individuals independently PER TRAIT
+GEBV_top5 <- GEBV_centered %>%
   group_by(TraitName, Sample_Id) %>%
-  summarise(mean_GEBV = mean(solution, na.rm = TRUE), .groups = "drop") %>%
+  mutate(mean_centered_GEBV = mean(solution_centered, na.rm = TRUE)) %>%
   group_by(TraitName) %>%
-  mutate(rank = rank(-mean_GEBV)) %>%
-  filter(rank <= ceiling(0.05 * n())) %>%
-  pull(Sample_Id) %>%
-  unique()
+  filter(dense_rank(-mean_centered_GEBV) <= ceiling(0.05 * n_distinct(Sample_Id))) %>%
+  ungroup()
 
-GEBV_plot_top <- GEBV_plot %>% filter(Sample_Id %in% top_individuals)
-
-# Plot reaction norms for Top 5%
-p_GxD_panel <- ggplot(GEBV_plot_top, aes(x = diet, y = solution, group = Sample_Id, colour = Sample_Id)) +
+# Plot reaction norms for Top 5% per trait
+p_GxD_panel <- ggplot(GEBV_top5, 
+                      aes(x = diet, y = solution_centered, group = Sample_Id, colour = Sample_Id)) +
   geom_line(alpha = 0.6) +
   geom_point(size = 1) +
-  facet_wrap(~TraitName, scales = "free_y", ncol = 2,
-             labeller = labeller(TraitName = c(LBW = "LBW", LL = "LL", LW = "LW", LSA = "LSA"))) +
+  facet_wrap(~TraitName, scales = "free_y", ncol = 2) +
   theme_bw(base_size = 14) +
-  labs(x = "Diet", y = "GEBVs (Top 5%)") +
+  labs(
+    x = "Diet", 
+    y = "Centered GEBVs (Top 5%)"
+  ) +
   theme(
     legend.position = "none",
     panel.grid.major = element_blank(),
@@ -478,7 +483,7 @@ p_GxD_panel <- ggplot(GEBV_plot_top, aes(x = diet, y = solution, group = Sample_
     strip.text = element_text(face = "bold")
   )
 
-# Display and save figure
+# Display and export figure
 print(p_GxD_panel)
 ggsave("BSF_GxD_reaction_norms_top5.svg", p_GxD_panel, width = 12, height = 8)
 ggsave("BSF_GxD_reaction_norms_top5.jpeg", p_GxD_panel, width = 12, height = 8, dpi = 600)

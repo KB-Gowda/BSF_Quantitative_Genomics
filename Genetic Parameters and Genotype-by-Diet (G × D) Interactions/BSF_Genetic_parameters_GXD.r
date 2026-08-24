@@ -162,7 +162,7 @@ for (tr in primary_traits) {
   cat("Univariate Additive Model (Heritability) for Main Trait:", tr, "\n")
   cat("==========================================\n")
   
-  fml <- as.formula(paste(tr, "~ Gray_Scale + Sampling_Day + Diet + Tray:Diet"))
+  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Diet + Tray:Diet"))
   
   mod <- asreml(
     fixed     = fml,
@@ -196,7 +196,7 @@ for (tr in primary_traits) {
   cat("Univariate Additive-Dominance Model for Main Trait:", tr, "\n")
   cat("==========================================\n")
   
-  fml <- as.formula(paste(tr, "~ Gray_Scale + Sampling_Day + Diet + Tray:Diet"))
+  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Diet + Tray:Diet"))
   
   mod <- asreml(
     fixed     = fml,
@@ -236,7 +236,7 @@ for (pair in main_trait_pairs) {
   cat("==========================================\n")
   
   fml_fixed <- as.formula(
-    paste0("cbind(", t1, ", ", t2, ")  ~ trait + trait:Gray_Scale + trait:Diet + trait:Sampling_Day + trait:Tray:Diet")
+    paste0("cbind(", t1, ", ", t2, ")  ~ trait + trait:Colour + trait:Diet + trait:Sampling_Day + trait:Tray:Diet")
   )
   
   mod <- asreml(
@@ -281,7 +281,7 @@ for (tr in diet_traits) {
   cat("Univariate Additive Model (Heritability) for Diet-Specific Trait:", tr, "\n")
   cat("==========================================\n")
   
-  fml <- as.formula(paste(tr, "~ Gray_Scale + Sampling_Day + Tray:Sampling_Day"))
+  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Tray:Sampling_Day"))
   
   mod <- asreml(
     fixed     = fml,
@@ -315,7 +315,7 @@ for (tr in diet_traits) {
   cat("Univariate Additive-Dominance Model for Diet-Specific Trait:", tr, "\n")
   cat("==========================================\n")
   
-  fml <- as.formula(paste(tr, "~ Gray_Scale + Sampling_Day + Tray:Sampling_Day"))
+  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Tray:Sampling_Day"))
   
   mod <- asreml(
     fixed     = fml,
@@ -358,7 +358,7 @@ for (tr in primary_traits) {
   fvw_tr <- paste("FVW", tr, sep = "_")
   
   fml_fixed <- as.formula(
-    paste0("cbind(", syk_tr, ", ", bsg_tr, ", ", fvw_tr, ") ~ trait + trait:Gray_Scale + trait:Sampling_Day + trait:Tray:Sampling_Day")
+    paste0("cbind(", syk_tr, ", ", bsg_tr, ", ", fvw_tr, ") ~ trait + trait:Colour + trait:Sampling_Day + trait:Tray:Sampling_Day")
   )
   
   mod <- asreml(

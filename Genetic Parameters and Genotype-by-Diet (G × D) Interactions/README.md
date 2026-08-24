@@ -73,26 +73,26 @@ For each growth trait, individuals were ranked according to their mean GEBV acro
 
 The primary growth traits analysed were:
 
-- **LBW** — larval body weight (mg)
-- **LL** — larval length (mm)
-- **LW** — larval width (mm)
-- **LSA** — larval surface area (mm²)
+- **LBW** - larval body weight (mg)
+- **LL** - larval length (mm)
+- **LW** - larval width (mm)
+- **LSA** - larval surface area (mm²)
 
 ## Dietary Treatments
 
-- **SYK** — soy-okara
-- **BSG** — brewers' spent grain
-- **FVW** — fruit and vegetable waste
+- **SYK** - soy-okara
+- **BSG** - brewers' spent grain
+- **FVW** - fruit and vegetable waste
 
 ## Software
 
-- **SAS** — descriptive statistics and fixed-effect analyses
-- **PLINK** — genotype quality control and PCA
-- **R** — data processing and visualisation
-- **ASReml-R** — genomic mixed models and G × D analyses
-- **snpReady** — genomic data processing and relationship matrix construction
-- **AGHmatrix** — additive and dominance relationship matrices
-- **ggplot2** — visualisation
+- **SAS** - descriptive statistics and fixed-effect analyses
+- **PLINK** - genotype quality control and PCA
+- **R** - data processing and visualisation
+- **ASReml-R** - genomic mixed models and G × D analyses
+- **snpReady** - genomic data processing and relationship matrix construction
+- **AGHmatrix** - additive and dominance relationship matrices
+- **ggplot2** - visualisation
 
 ## Repository Contents
 

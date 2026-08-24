@@ -1,5 +1,5 @@
 /* ==============================================================================
-   Title: Descriptive Statistics and GLM Analysis of Black Soldier Fly Growth Traits
+   Title: Descriptive Statistics and GLM Analysis of Black soldier fly larvae Growth Traits
    ============================================================================== */
 
 

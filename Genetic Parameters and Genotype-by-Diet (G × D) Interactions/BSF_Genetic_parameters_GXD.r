@@ -281,7 +281,7 @@ for (tr in diet_traits) {
   cat("Univariate Additive Model (Heritability) for Diet-Specific Trait:", tr, "\n")
   cat("==========================================\n")
   
-  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Tray:Sampling_Day"))
+  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Tray + Tray:Sampling_Day"))
   
   mod <- asreml(
     fixed     = fml,
@@ -315,7 +315,7 @@ for (tr in diet_traits) {
   cat("Univariate Additive-Dominance Model for Diet-Specific Trait:", tr, "\n")
   cat("==========================================\n")
   
-  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Tray:Sampling_Day"))
+  fml <- as.formula(paste(tr, "~ Colour + Sampling_Day + Tray + Tray:Sampling_Day"))
   
   mod <- asreml(
     fixed     = fml,
@@ -358,7 +358,7 @@ for (tr in primary_traits) {
   fvw_tr <- paste("FVW", tr, sep = "_")
   
   fml_fixed <- as.formula(
-    paste0("cbind(", syk_tr, ", ", bsg_tr, ", ", fvw_tr, ") ~ trait + trait:Colour + trait:Sampling_Day + trait:Tray:Sampling_Day")
+    paste0("cbind(", syk_tr, ", ", bsg_tr, ", ", fvw_tr, ") ~ trait + trait:Colour + trait:Tray + trait:Sampling_Day + trait:Tray:Sampling_Day")
   )
   
   mod <- asreml(

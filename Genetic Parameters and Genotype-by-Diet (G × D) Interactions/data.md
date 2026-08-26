@@ -1,4 +1,4 @@
-# Phenotypes and SNP Genotypes of Australian Black soldier fly (*Hermetia illucens*) from a breeding trial
+# Phenotypes and SNP Genotypes of Australian Black soldier fly (*Hermetia illucens*) from the base population
 
 ## Description
 This dataset contains phenotypic and SNP genotypic data from a Black soldier fly (*Hermetia illucens*) breeding trial.

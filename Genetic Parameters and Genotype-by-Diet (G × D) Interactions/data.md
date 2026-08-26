@@ -1,9 +1,9 @@
-# Phenotypes and SNP Genotypes of Black Soldier Fly (*Hermetia illucens*) from a Breeding Trial
+# Phenotypes and SNP Genotypes of Australian Black soldier fly (*Hermetia illucens*) from a breeding trial
 
 ## Description
-This dataset contains phenotypic and SNP genotypic data from a Black Soldier Fly (*Hermetia illucens*) breeding trial. The phenotypic dataset contains 2,097 individuals measured for four growth traits under three dietary treatments.
+This dataset contains phenotypic and SNP genotypic data from a Black soldier fly (*Hermetia illucens*) breeding trial.
 
-The dataset supports analyses of genetic parameters, and genotype × diet interactions of growth traits.
+The dataset supports analyses of genetic parameters, and genotype × diet interactions of growth traits in Australian Black soldier fly larvae (BSFL).
 
 ---
 

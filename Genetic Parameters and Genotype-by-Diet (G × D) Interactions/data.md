@@ -87,16 +87,16 @@ pheno <- read.table(
   sep = "\t",
   stringsAsFactors = FALSE
 )
+```
 
-
-### **Data Use**
+### Data Use
 The dataset was used for analyses of:
 
 Genetic parameters of growth traits (LBW, LL, LW, and LSA)
 
 Genotype × diet interactions across environments (SYK, BSG, and FVW)
 
-### **Software**
+### Software
 PLINK v1.9: Used for SNP genotype processing and quality control.
 
 R: Used for data processing and downstream genetic analyses.

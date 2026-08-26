@@ -1,4 +1,3 @@
-```markdown
 # Phenotypes and SNP Genotypes of Black Soldier Fly (*Hermetia illucens*) from a Breeding Trial
 
 ## Description
@@ -106,7 +105,3 @@ The dataset was used for analyses of:
 
 * **PLINK v1.9:** Used for SNP genotype processing and quality control.
 * **R:** Used for data processing and downstream genetic analyses.
-
-```
-
-```

@@ -1,3 +1,4 @@
+```markdown
 # Phenotypes and SNP Genotypes of Black Soldier Fly (*Hermetia illucens*) from a Breeding Trial
 
 ## Description
@@ -87,16 +88,25 @@ pheno <- read.table(
   sep = "\t",
   stringsAsFactors = FALSE
 )
+
 ```
 
-### Data Use
+---
+
+## Data Use
+
 The dataset was used for analyses of:
 
-Genetic parameters of growth traits (LBW, LL, LW, and LSA)
+1. Genetic parameters of growth traits (`LBW`, `LL`, `LW`, and `LSA`)
+2. Genotype × diet interactions across environments (`SYK`, `BSG`, and `FVW`)
 
-Genotype × diet interactions across environments (SYK, BSG, and FVW)
+---
 
-### Software
-PLINK v1.9: Used for SNP genotype processing and quality control.
+## Software
 
-R: Used for data processing and downstream genetic analyses.
+* **PLINK v1.9:** Used for SNP genotype processing and quality control.
+* **R:** Used for data processing and downstream genetic analyses.
+
+```
+
+```

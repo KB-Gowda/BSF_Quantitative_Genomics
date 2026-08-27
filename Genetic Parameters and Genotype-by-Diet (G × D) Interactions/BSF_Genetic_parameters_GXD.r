@@ -2,7 +2,7 @@
 # Title: Estimation of Genetic Parameters and Genotype-by-Diet (G × D) Interactions
 #        for Growth Traits in Australian Black soldier fly larvae (Hermetia illucens)
 # Author: Kishor B. Gowda
-# Date: 2026-08-21
+# Date: 2026-08-27
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
@@ -294,7 +294,7 @@ for (tr in diet_traits) {
   
   mod <- update.asreml(mod)
   
-  summary(mod)
+  print(summary(mod))
   print(summary(mod)$varcomp)
   print(vpredict(mod, as.formula(paste0("VP_", tr, " ~ V1 + V2"))))
   print(vpredict(mod, as.formula(paste0("h2_", tr, " ~ V1 / (V1 + V2)"))))
@@ -327,7 +327,8 @@ for (tr in diet_traits) {
   )
   
   mod <- update.asreml(mod)
-  
+
+  print(summary(mod))
   print(summary(mod)$varcomp)
   print(vpredict(mod, as.formula(paste0("h2_", tr, " ~ V1 / (V1 + V2 + V3)"))))
   print(vpredict(mod, as.formula(paste0("d2_", tr, " ~ V2 / (V1 + V2 + V3)"))))
@@ -374,7 +375,7 @@ for (tr in primary_traits) {
   
   mod <- update.asreml(mod)
   
-  summary(mod)
+   print(summary(mod))
   print(summary(mod)$varcomp)
   
   # Genetic Correlations

@@ -89,7 +89,7 @@ The primary growth traits analysed were:
 * **BSG** - brewers' spent grain
 * **FVW** - fruit and vegetable waste
 
-## Software
+## Software/Packages
 
 * **SAS** - descriptive statistics and fixed-effect analyses
 * **PLINK** - genotype quality control and PCA

@@ -51,54 +51,6 @@ The following object is masked from 'package:dplyr':
     where
 ```
 
-#1. Load Required Packages
-library(data.table)
-library(dplyr)</code></pre>
-<pre><code>
-Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:data.table&#39;:
-
-    between, first, last</code></pre>
-<pre><code>The following objects are masked from &#39;package:stats&#39;:
-
-    filter, lag</code></pre>
-<pre><code>The following objects are masked from &#39;package:base&#39;:
-
-    intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(readr)
-library(ggplot2)</code></pre>
-<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.4.3</code></pre>
-<pre class="r"><code>library(readxl)
-library(snpReady)</code></pre>
-<pre><code>Loading required package: Matrix</code></pre>
-<pre><code>Loading required package: matrixcalc</code></pre>
-<pre><code>Loading required package: stringr</code></pre>
-<pre><code>Loading required package: rgl</code></pre>
-<pre><code>Loading required package: impute</code></pre>
-<pre class="r"><code>library(MASS)</code></pre>
-<pre><code>
-Attaching package: &#39;MASS&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:dplyr&#39;:
-
-    select</code></pre>
-<pre class="r"><code>library(asreml)</code></pre>
-<pre><code>Online License checked out Thu Aug 27 11:24:34 2026</code></pre>
-<pre><code>Loading ASReml-R version 4.2</code></pre>
-<pre><code>
-Attaching package: &#39;asreml&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:MASS&#39;:
-
-    coop, oats</code></pre>
-<pre class="r"><code>library(AGHmatrix)
-library(MCMCglmm)</code></pre>
-<pre><code>Warning: package &#39;MCMCglmm&#39; was built under R version 4.4.3</code></pre>
-<pre><code>Loading required package: coda</code></pre>
-<pre><code>Warning: package &#39;coda&#39; was built under R version 4.4.3</code></pre>
-<pre><code>Loading required package: ape</code></pre>
-<pre><code>
-Attaching package: &#39;ape&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:dplyr&#39;:
-
     where</code></pre>
 <pre class="r"><code># ------------------------------------------------------------------------------
 # 2. Define Paths &amp; Quality Control Filtering (PLINK)

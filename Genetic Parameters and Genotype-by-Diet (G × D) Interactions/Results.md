@@ -1,11 +1,3 @@
----
-author: Kishor B. Gowda
-date: 2026-08-27
-generator: pandoc
-title: Estimation of Genetic Parameters and Genotype-by-Diet (G × D) Interactions for Growth Traits in Australian Black soldier fly larvae (Hermetia illucens)
-viewport: width=device-width, initial-scale=1
----
-
 <div class="container-fluid main-container">
 
 <div id="header">

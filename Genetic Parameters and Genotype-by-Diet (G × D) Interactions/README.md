@@ -1,4 +1,4 @@
-# Estimation of Genetic Parameters and Genotype-by-Diet (G × D) Interactions for Growth Traits in Australian Black soldier fly larvae (*Hermetia illucens*)
+# Estimation of genetic parameters and genotype-by-diet (G × D) interactions for growth traits in Australian Black soldier fly larvae (*Hermetia illucens*)
 
 This repository contains the two analysis scripts used to evaluate phenotypic variation, genetic parameters, genetic relationships, population structure, and genotype × diet (G × D) interactions for growth traits in Australian black soldier fly larvae (*Hermetia illucens*).
 

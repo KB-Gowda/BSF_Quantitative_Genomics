@@ -1,5 +1,56 @@
 # Estimation of Genetic Parameters and Genotype-by-Diet (G × D) Interactions for Growth Traits in Australian Black soldier fly larvae (Hermetia illucens)
 
+# 1. Load Required Packages
+
+```r
+library(data.table)
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(readxl)
+library(snpReady)
+library(MASS)
+library(asreml)
+library(AGHmatrix)
+library(MCMCglmm)
+```
+
+```text
+Attaching package: 'dplyr'
+The following objects are masked from 'package:data.table':
+    between, first, last
+The following objects are masked from 'package:stats':
+    filter, lag
+The following objects are masked from 'package:base':
+    intersect, setdiff, setequal, union
+
+Warning: package 'ggplot2' was built under R version 4.4.3
+
+Loading required package: Matrix
+Loading required package: matrixcalc
+Loading required package: stringr
+Loading required package: rgl
+Loading required package: impute
+
+Attaching package: 'MASS'
+The following object is masked from 'package:dplyr':
+    select
+
+Online License checked out Thu Aug 27 11:24:34 2026
+Loading ASReml-R version 4.2
+Attaching package: 'asreml'
+The following objects are masked from 'package:MASS':
+    coop, oats
+
+Warning: package 'MCMCglmm' was built under R version 4.4.3
+Loading required package: coda
+Warning: package 'coda' was built under R version 4.4.3
+Loading required package: ape
+Attaching package: 'ape'
+The following object is masked from 'package:dplyr':
+    where
+```
+
 #1. Load Required Packages
 library(data.table)
 library(dplyr)</code></pre>

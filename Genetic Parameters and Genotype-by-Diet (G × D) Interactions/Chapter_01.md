@@ -1,3 +1,9 @@
+---
+title: "Estimation of Genetic Parameters and Genotype-by-Diet (G × D) Interactions for Growth Traits in Australian Black soldier fly larvae (Hermetia illucens)"
+author: "Kishor B. Gowda"
+date: "2026-08-27"
+---
+
 # 1. Load Required Packages
 # ------------------------------------------------------------------------------
 library(data.table)

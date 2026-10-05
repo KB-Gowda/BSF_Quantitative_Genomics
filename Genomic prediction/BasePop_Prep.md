@@ -1,4 +1,4 @@
-It builds the marker and genomic relationship matrices and the adjusted phenotypes, and saves to `BasePop_prep.RData`.
+# It builds the marker and genomic relationship matrices and the adjusted phenotypes, and saves to `BasePop_prep.RData`.
 
 -   Overall adjusted phenotypes (4 traits): `Adj_Weight`, `Adj_Length`,
     `Adj_Width`, `Adj_SurfaceArea`

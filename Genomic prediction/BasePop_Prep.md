@@ -1,4 +1,5 @@
-# It builds the marker and genomic relationship matrices and the adjusted phenotypes, and saves to `BasePop_prep.RData`.
+It builds the marker and genomic relationship matrices and the adjusted
+phenotypes, and saves to `BasePop_prep.RData`.
 
 -   Overall adjusted phenotypes (4 traits): `Adj_Weight`, `Adj_Length`,
     `Adj_Width`, `Adj_SurfaceArea`
@@ -40,11 +41,11 @@
 
     ## Loading required package: impute
 
-    ## Online License checked out Fri Oct  2 11:57:18 2026
+    ## Online License checked out Mon Oct  5 10:07:21 2026
 
     ## Loading ASReml-R version 4.2
 
-    library(AGHmatrix); library(Matrix); library(MCMCglmm)
+    library(AGHmatrix); library(Matrix); library(MCMCglmm)   # MCMCglmm provides sm2asreml
 
     ## Warning: package 'MCMCglmm' was built under R version 4.4.3
 
@@ -125,8 +126,9 @@
     colnames(Gd) <- rownames(Gd) <- pheno_match$Sample_Id
 
     # sm2asreml comes from MCMCglmm
-    iGd    <- solve(Gd)
-    iGd    <- as(iGd, "sparseMatrix")
+    iGd <- solve(Gd)
+    iGd <- as(iGd, "sparseMatrix")
+    rownames(iGd) <- colnames(iGd) <- as.character(pheno_match$Sample_Id)
     Gd.inv <- MCMCglmm::sm2asreml(iGd)
     attr(Gd.inv, "INVERSE") <- TRUE
 
@@ -140,6 +142,7 @@
     pheno_final <- pheno_final[match(common_ids, pheno_final$Sample_Id), , drop = FALSE]
 
     Xa_final <- M_impute[pheno_final$Sample_Id, , drop = FALSE]
+    rownames(Xa_final) <- as.character(pheno_final$Sample_Id)
 
     # Sanity checks: one record per individual, and matrices in the same order as the data
     stopifnot(!anyDuplicated(pheno_final$Sample_Id),
@@ -160,6 +163,7 @@
       Xd_final[geno_col == 2, j] <- -2 * (q_j^2)
     }
     colnames(Xd_final) <- paste0(colnames(Xa_final), "_dom")
+    rownames(Xd_final) <- as.character(pheno_final$Sample_Id)
 
 ## 7. Adjusted phenotypes
 
@@ -194,13 +198,42 @@
     diet_trait_info <- expand.grid(Diet = diets, Trait = diet_adj_traits, stringsAsFactors = FALSE)
     diet_trait_info$Adjusted <- paste0("Adj_", diet_trait_info$Diet, "_", diet_trait_info$Trait)
 
-## 9. Save (inputs for the cross-validation scripts)
+## 9. Generate cross-validation folds (5-fold, 20 repetitions)
+
+    library(caret)
+
+    ## Warning: package 'caret' was built under R version 4.4.3
+
+    ## Warning: package 'ggplot2' was built under R version 4.4.3
+
+    n_samples <- nrow(pheno_final)
+    n_reps    <- 20
+    k_folds   <- 5
+
+    cv_matrix <- matrix(NA_integer_, nrow = n_samples, ncol = n_reps,
+                        dimnames = list(pheno_final$Sample_Id, paste0("Rep_", 1:n_reps)))
+
+    set.seed(421)  # Ensures reproducible fold assignments
+
+    for (r in 1:n_reps) {
+      # Stratified sampling by Diet so each fold maintains equal diet representation
+      folds <- createFolds(pheno_final$Diet, k = k_folds, list = TRUE, returnTrain = FALSE)
+      for (k in 1:k_folds) {
+        cv_matrix[folds[[k]], r] <- k
+      }
+    }
+
+## 10. Save
+
+    # Convert Sample_Id to factor before saving so downstream ASReml models recognize it
+    pheno_final$Sample_Id <- factor(pheno_final$Sample_Id)
 
     save(pheno_final, M, M_impute, Xa_final, Xd_final, Ga, Ginv, Gd, Gd.inv,
-         trait_info, diet_trait_info, diets, primary_traits, file = out_file)
+         trait_info, diet_trait_info, diets, primary_traits, cv_matrix, file = out_file)
+
     write.csv(pheno_final, "BasePop_adjusted_phenotypes.csv", row.names = FALSE)
 
-    # Quick check: records per diet and number of adjusted values per phenotype
+    # Quick checks
     print(table(pheno_final$Diet))
 
     ## 
@@ -215,6 +248,47 @@
     ##                 965                 965                 555                 555 
     ##      Adj_FVW_Weight Adj_FVW_SurfaceArea 
     ##                 563                 563
+
+    str(pheno_final)
+
+    ## 'data.frame':    2083 obs. of  32 variables:
+    ##  $ Sl_No              : int  1 2 3 4 5 6 7 8 9 10 ...
+    ##  $ Sample_Id          : Factor w/ 2083 levels "BSF_F0_B1_19A01",..: 556 557 558 559 568 569 570 571 580 581 ...
+    ##  $ Tray               : Factor w/ 9 levels "B1","B2","B3",..: 4 4 4 4 4 4 4 4 4 4 ...
+    ##  $ Diet               : Factor w/ 3 levels "BSG","FVW","SYK": 3 3 3 3 3 3 3 3 3 3 ...
+    ##  $ Sampling_Day       : Factor w/ 3 levels "13","14","15": 1 1 1 1 1 1 1 1 1 1 ...
+    ##  $ Colour             : num  122 166 145 176 145 ...
+    ##  $ Weight             : num  220 197 212 132 220 145 234 149 208 177 ...
+    ##  $ Length             : num  18.8 22.2 21.6 17.8 21.3 ...
+    ##  $ Width              : num  4.36 5.21 5.36 3.47 5.72 4.21 5.73 4.03 5.78 5.11 ...
+    ##  $ SurfaceArea        : num  76 95.7 97.8 47.7 99.6 ...
+    ##  $ SYK_Weight         : num  220 197 212 132 220 145 234 149 208 177 ...
+    ##  $ BSG_Weight         : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ FVW_Weight         : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ SYK_Length         : num  18.8 22.2 21.6 17.8 21.3 ...
+    ##  $ BSG_Length         : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ FVW_Length         : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ SYK_Width          : num  4.36 5.21 5.36 3.47 5.72 4.21 5.73 4.03 5.78 5.11 ...
+    ##  $ BSG_Width          : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ FVW_Width          : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ SYK_SurfaceArea    : num  76 95.7 97.8 47.7 99.6 ...
+    ##  $ BSG_SurfaceArea    : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ FVW_SurfaceArea    : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ Adj_Weight         : num  32.2 27 33.4 -34.1 41.4 ...
+    ##  $ Adj_Length         : num  -0.722 3.735 2.65 -0.484 2.34 ...
+    ##  $ Adj_Width          : num  -0.736 0.477 0.45 -1.185 0.81 ...
+    ##  $ Adj_SurfaceArea    : num  -11.8 21.7 17.1 -23.2 18.9 ...
+    ##  $ Adj_SYK_Weight     : num  21.7 24.2 26.8 -35.4 34.8 ...
+    ##  $ Adj_SYK_SurfaceArea: num  -15 22.2 15.8 -22 17.6 ...
+    ##  $ Adj_BSG_Weight     : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ Adj_BSG_SurfaceArea: num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ Adj_FVW_Weight     : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ Adj_FVW_SurfaceArea: num  NA NA NA NA NA NA NA NA NA NA ...
+
+    cat("\n✓ BasePop_prep.RData saved with cv_matrix (", n_samples, "samples x 20 reps)\n")
+
+    ## 
+    ## ✓ BasePop_prep.RData saved with cv_matrix ( 2083 samples x 20 reps)
 
 ## Session info
 
@@ -239,20 +313,33 @@
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] MCMCglmm_2.36     ape_5.8-1         coda_0.19-4.1     AGHmatrix_2.1.4  
-    ##  [5] asreml_4.2.0.355  snpReady_0.9.6    impute_1.80.0     rgl_1.3.17       
-    ##  [9] stringr_1.5.1     matrixcalc_1.0-6  Matrix_1.7-1      dplyr_1.1.4      
-    ## [13] data.table_1.16.4
+    ##  [1] caret_7.0-1       lattice_0.22-6    ggplot2_4.0.2     MCMCglmm_2.36    
+    ##  [5] ape_5.8-1         coda_0.19-4.1     AGHmatrix_2.1.4   asreml_4.2.0.355 
+    ##  [9] snpReady_0.9.6    impute_1.80.0     rgl_1.3.17        stringr_1.5.1    
+    ## [13] matrixcalc_1.0-6  Matrix_1.7-1      dplyr_1.1.4       data.table_1.16.4
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tensorA_0.36.2.1   generics_0.1.3     stringi_1.8.4      lattice_0.22-6    
-    ##  [5] cubature_2.1.4     digest_0.6.37      magrittr_2.0.3     evaluate_1.0.3    
-    ##  [9] grid_4.4.2         RColorBrewer_1.1-3 fastmap_1.2.0      jsonlite_1.8.9    
-    ## [13] scales_1.4.0       cli_3.6.3          rlang_1.1.4        base64enc_0.1-3   
-    ## [17] yaml_2.3.10        tools_4.4.2        parallel_4.4.2     corpcor_1.6.10    
-    ## [21] ggplot2_4.0.2      vctrs_0.6.5        R6_2.5.1           zoo_1.8-12        
-    ## [25] lifecycle_1.0.4    htmlwidgets_1.6.4  MASS_7.3-61        pkgconfig_2.0.3   
-    ## [29] pillar_1.10.1      gtable_0.3.6       glue_1.8.0         Rcpp_1.0.14       
-    ## [33] xfun_0.50          tibble_3.2.1       tidyselect_1.2.1   rstudioapi_0.17.1 
-    ## [37] knitr_1.49         farver_2.1.2       htmltools_0.5.8.1  nlme_3.1-166      
-    ## [41] rmarkdown_2.29     compiler_4.4.2     S7_0.2.0
+    ##  [1] tidyselect_1.2.1     timeDate_4052.112    farver_2.1.2        
+    ##  [4] S7_0.2.0             fastmap_1.2.0        tensorA_0.36.2.1    
+    ##  [7] pROC_1.19.1          digest_0.6.37        rpart_4.1.24        
+    ## [10] timechange_0.3.0     lifecycle_1.0.4      survival_3.8-3      
+    ## [13] magrittr_2.0.3       compiler_4.4.2       rlang_1.1.4         
+    ## [16] tools_4.4.2          yaml_2.3.10          knitr_1.49          
+    ## [19] htmlwidgets_1.6.4    plyr_1.8.9           RColorBrewer_1.1-3  
+    ## [22] withr_3.0.2          purrr_1.0.2          nnet_7.3-20         
+    ## [25] grid_4.4.2           stats4_4.4.2         future_1.75.0       
+    ## [28] globals_0.19.1       scales_1.4.0         iterators_1.0.14    
+    ## [31] MASS_7.3-61          cli_3.6.3            rmarkdown_2.29      
+    ## [34] generics_0.1.3       rstudioapi_0.17.1    future.apply_1.20.2 
+    ## [37] reshape2_1.4.4       splines_4.4.2        parallel_4.4.2      
+    ## [40] base64enc_0.1-3      vctrs_0.6.5          hardhat_1.4.3       
+    ## [43] jsonlite_1.8.9       listenv_1.0.0        foreach_1.5.2       
+    ## [46] gower_1.0.2          recipes_1.4.0        glue_1.8.0          
+    ## [49] parallelly_1.48.0    codetools_0.2-20     lubridate_1.9.4     
+    ## [52] stringi_1.8.4        cubature_2.1.4       gtable_0.3.6        
+    ## [55] tibble_3.2.1         pillar_1.10.1        htmltools_0.5.8.1   
+    ## [58] ipred_0.9-16         lava_1.9.3           R6_2.5.1            
+    ## [61] evaluate_1.0.3       corpcor_1.6.10       class_7.3-23        
+    ## [64] Rcpp_1.0.14          nlme_3.1-166         prodlim_2026.03.11  
+    ## [67] xfun_0.50            zoo_1.8-12           pkgconfig_2.0.3     
+    ## [70] ModelMetrics_1.2.2.2

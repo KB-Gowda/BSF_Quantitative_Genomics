@@ -44,7 +44,7 @@ folds. It saves to `GP_panel_input.RData`.
 
     ## Loading required package: impute
 
-    ## Online License checked out Mon Oct 12 11:54:57 2026
+    ## Online License checked out Fri Oct 16 16:22:55 2026
 
     ## Loading ASReml-R version 4.2
 
@@ -135,7 +135,7 @@ folds. It saves to `GP_panel_input.RData`.
       mat
     }
 
-    # Build the additive inverse (Ginv) and dominance inverse (Gd.inv) for one panel
+    # Build additive dosage matrix (Xa), additive inverse (Ginv), and dominance inverse (Gd.inv) for one panel
     build_panel_matrices <- function(raw_file) {
       geno_p <- fread(raw_file)
       geno_p <- geno_p[match(ids, geno_p$IID), ]
@@ -145,7 +145,11 @@ folds. It saves to `GP_panel_input.RData`.
       # Additive: impute, VanRaden GRM, bend, invert
       ready <- raw.data(data = M_p, frame = "wide", base = FALSE, call.rate = 0.9, maf = 0.005,
                         imput = TRUE, imput.type = "mean")
-      Ga_p <- G.matrix(M = ready$M.clean, method = "VanRaden", format = "wide")$Ga
+      
+      Xa_p <- ready$M.clean
+      rownames(Xa_p) <- ids
+
+      Ga_p <- G.matrix(M = Xa_p, method = "VanRaden", format = "wide")$Ga
       Ga_p <- bend_G_matrix(Ga_p)
       Ginv_p <- MASS::ginv(Ga_p)
       dimnames(Ginv_p) <- list(ids, ids)
@@ -160,7 +164,8 @@ folds. It saves to `GP_panel_input.RData`.
       Gd.inv_p <- MCMCglmm::sm2asreml(iGd_p)
       attr(Gd.inv_p, "INVERSE") <- TRUE
 
-      list(Ginv = Ginv_p, Gd.inv = Gd.inv_p, n_snps = ncol(ready$M.clean))
+      # Return Xa dosage alongside inverse relationship matrices
+      list(Xa = Xa_p, Ginv = Ginv_p, Gd.inv = Gd.inv_p, n_snps = ncol(Xa_p))
     }
 
 ## 3. Random SNP panels
@@ -325,10 +330,10 @@ folds. It saves to `GP_panel_input.RData`.
     ##   4 111 113 193
     ##   5 111 113 193
 
-    cat("\n✓", out_file, "saved with", length(panel_names), "panels and cv_matrix (", n_samples, "samples x", n_reps, "reps)\n")
+    cat("\nb", out_file, "saved with", length(panel_names), "panels and cv_matrix (", n_samples, "samples x", n_reps, "reps)\n")
 
     ## 
-    ## ✓ GP_panel_input.RData saved with 9 panels and cv_matrix ( 2083 samples x 20 reps)
+    ## b GP_panel_input.RData saved with 9 panels and cv_matrix ( 2083 samples x 20 reps)
 
 ## Session info
 

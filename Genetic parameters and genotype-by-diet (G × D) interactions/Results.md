@@ -4522,7 +4522,7 @@ p_GxD_panel <- ggplot(GEBV_top5,
   )
 
 # Display and export figure
-print(p_GxD_panel)<img width="7200" height="4800" alt="BSF_GxD_reaction_norms_top5" src="https://github.com/user-attachments/assets/81248583-faef-44eb-858e-32483c6eb999" />
+print(p_GxD_panel)
 
 ggsave("BSF_GxD_reaction_norms_top5.svg", p_GxD_panel, width = 12, height = 8)
 ggsave("BSF_GxD_reaction_norms_top5.jpeg", p_GxD_panel, width = 12, height = 8, dpi = 600)

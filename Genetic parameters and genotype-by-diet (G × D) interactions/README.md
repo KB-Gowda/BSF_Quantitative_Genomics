@@ -1,14 +1,10 @@
-# Estimation of genetic parameters and genotype-by-diet (G × D) interactions for growth traits in Australian black soldier fly larvae (*Hermetia illucens*)
+# Genetic parameters and genotype-by-diet interactions for growth traits in Australian black soldier fly larvae: Implications for selective breeding
 
 ## Citation
 
 If you use these scripts or find this work helpful, please cite our paper:
 
 > **Gowda, K.B., Septriani, S., Jones, D.B., Jerry, D.R., Tedder, C., & Zenger, K.R.** (2026). Genetic parameters and genotype-by-diet interactions for growth traits in Australian black soldier fly larvae: Implications for selective breeding. *Journal of Insects as Food and Feed* (published online ahead of print 2026). https://doi.org/10.1163/23524588-bja10484
-
-The preprint is available on bioRxiv: https://doi.org/10.64898/2026.03.14.711759
-
-<!-- CONFIRM: check that the journal DOI above opens the published paper. The bioRxiv DOI was confirmed; the journal DOI was not. -->
 
 ---
 

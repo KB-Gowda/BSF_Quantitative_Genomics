@@ -8,7 +8,7 @@
 
 ---
 
-This repository contains the analysis scripts used to evaluate genomic prediction methods for growth traits in black soldier fly larvae (*Hermetia illucens*). The analyses investigate prediction performance across dietary environments, genetic effect models, marker panel densities, and populations from different generations to develop a genomic prediction framework for BSF breeding.
+This folder contains the analysis scripts used to evaluate genomic prediction methods for growth traits in black soldier fly larvae (*Hermetia illucens*). The analyses investigate prediction performance across dietary environments, genetic effect models, marker panel densities, and populations from different generations to develop a genomic prediction framework for BSF breeding.
 
 The study uses phenotypic and genotypic data from a base population and an F<sub>7</sub> population established from the same original genetic background.
 

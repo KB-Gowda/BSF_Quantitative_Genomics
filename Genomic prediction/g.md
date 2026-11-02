@@ -1,109 +1,210 @@
-# A Genomic Prediction Framework for Growth Traits in Black Soldier Fly (*Hermetia illucens*) Breeding
+# A genomic prediction framework for growth traits in black soldier fly (*Hermetia illucens*) breeding
 
 ## Citation
 
-> If you use these scripts or find this work helpful, please cite the associated publication once available:
+> If you use these scripts or find this work helpful, please cite the associated publication once available.
 
-*Manuscript in preparation. Citation details will be updated upon publication.*
-
----
-
-## Overview
-
-This repository contains the complete analytical pipeline and reproducible R workflows used to evaluate genomic prediction strategies for larval growth traits in black soldier fly (*Hermetia illucens*). The project investigates predictive performance across:
-1. **Dietary environments** (industrial waste streams vs. standard diets)
-2. **Genetic architectures** (Additive-only [**Model A**] vs. Additive + Dominance [**Model AD**])
-3. **Marker panel densities** (whole-genome vs. density-reduced and trait-targeted panels)
-4. **Inter-generational transferability** (forward and backward predictions between temporally separated generations)
-
-The analyses use high-density genotypic and pre-adjusted phenotypic data from a diverse Base breeding population ($n = 2,083$) and an $F_7$ advanced generation ($n = 536$) derived from the same ancestral genetic background.
+*Manuscript in preparation. Citation details will be added following publication.*
 
 ---
 
-## Key Analyses & Scenarios
+This folder contains the analysis scripts used to evaluate genomic prediction methods for growth traits in black soldier fly larvae (*Hermetia illucens*). The analyses investigate prediction performance across dietary environments, genetic effect models, marker panel densities, and populations from different generations to develop a genomic prediction framework for BSF breeding.
 
-### 1. Overall Base Population Prediction (`1.Overall-base/`)
-Evaluates 5-fold cross-validation (20 replications) across all four primary growth traits:
-- **LBW** – Larval Body Weight (mg)
-- **LL** – Larval Length (mm)
-- **LW** – Larval Width (mm)
-- **LSA** – Larval Surface Area (mm²)
-
-Benchmarked across parametric linear mixed models (GBLUP), variable selection/shrinkage Bayesian alphabets, and non-parametric machine learning.
-
-### 2. Within-Diet Genomic Prediction (`2.Diet-wise-base/`)
-Evaluates model performance within individual larval dietary waste streams for **LBW** and **LSA**:
-- **SYK** – Soy-okara ($n = 965$)
-- **BSG** – Brewers' spent grain ($n = 555$)
-- **FVW** – Fruit and vegetable waste ($n = 563$)
-
-### 3. Accounting for Genotype × Diet Interaction (`3.Multivariate-GxD/`)
-Evaluates multi-trait models treating performance in SYK, BSG, and FVW as distinct, correlated traits to account for genotype-by-environment ($G \times D$) covariance:
-- **GBLUP:** Multi-trait unstructured genetic covariance matrix (`us(trait):vm(Sample_Id, Ginv)`)
-- **BayesC:** Multivariate Spike-and-Slab (`BGLR::Multitrait`)
-- **Random Forest:** Multi-output joint splitting (`randomForestSRC::rfsrc` with `Multivar() ~ .`)
-
-### 4. Cross-Diet Genomic Prediction (`4.Cross-diet-base/`)
-Tests the capacity of models trained on two larval diets to predict breeding/genotypic values in an unobserved third diet:
-- **Train:** SYK + BSG $\rightarrow$ **Predict:** FVW
-- **Train:** SYK + FVW $\rightarrow$ **Predict:** BSG
-- **Train:** BSG + FVW $\rightarrow$ **Predict:** SYK
-
-### 5. Evaluation of Marker Panel Densities (`5.Panels-base/`)
-Quantifies predictive decay across reduced-density and targeted SNP panels for **LBW** and **LSA**:
-- **Random density reductions:** 4,000, 3,000, 2,000, 1,000, and 500 SNPs (stratified by chromosome length)
-- **Targeted panel:** Top 1,000 SNPs selected based on absolute GBLUP-derived allele substitution effects ($\hat{\alpha}$) estimated strictly within training partitions
-
-### 6. Inter-Generational Forward & Backward Prediction (`6.Forward-Backward/`)
-Evaluates the cross-generational stability of genomic predictions across temporal and dietary shifts:
-- **Forward Prediction (Base $\rightarrow F_7$):**
-  - **Scenario 1 (Pooled Baseline):** Models trained on overall Base phenotypes predicting overall $F_7$ performance
-  - **Scenario 2 (Diet-Specific & Multi-Diet Averaging):** Models trained on Base diets (SYK, BSG, FVW) predicting $F_7$ performance using individual diet EBVs and composite 3-diet average breeding values
-- **Backward Prediction ($F_7 \rightarrow$ Base):**
-  - Evaluates models trained on the specialized $F_7$ population ($n = 536$) predicting into the whole Base population ($n = 2,083$) as well as diet-specific Base subsets
+The study uses phenotypic and genotypic data from a base population and an F<sub>7</sub> population established from the same original genetic background.
 
 ---
 
-## Genomic Prediction Models & Software Implementation
+## Key Analyses
+
+### 1. Genomic Prediction in the Base Population
+Genomic prediction was evaluated in the base population for four growth traits:
+* **LBW** – Larval body weight
+* **LL** – Larval length
+* **LW** – Larval width
+* **LSA** – Larval surface area
+
+Different genomic prediction methods and genetic effect models were evaluated to assess their performance in predicting larval growth traits.
+
+### 2. Within-Diet Genomic Prediction
+Genomic prediction was evaluated separately within each of the three dietary environments in the base population:
+* **SYK** – Soy-okara
+* **BSG** – Brewers' spent grain
+* **FVW** – Fruit and vegetable waste
+
+This scenario focused on **LBW** and **LSA** to assess prediction performance within individual dietary environments.
+
+### 3. Genomic Prediction Accounting for Genotype × Diet Interaction
+Genomic prediction accounting for genotype × diet (G × D) interactions was evaluated using multivariate models.
+
+For LBW and LSA, observations from the three dietary environments were treated as separate but correlated traits. The models incorporated genetic relationships between diets to evaluate genomic prediction while accounting for G × D interactions. Multivariate models were implemented for GBLUP, BayesC and random forest.
+
+### 4. Cross-Diet Genomic Prediction
+Cross-diet genomic prediction was evaluated in the base population by training models using individuals from two dietary environments and predicting individuals from the remaining environment.
+
+The following combinations were considered:
+* **Train:** SYK & BSG → **Predict:** FVW
+* **Train:** SYK & FVW → **Predict:** BSG
+* **Train:** BSG & FVW → **Predict:** SYK
+
+This scenario evaluated the potential to predict growth traits in a target dietary environment using information from other dietary environments. It was run with GBLUP, BayesC and random forest.
+
+### 5. Evaluation of SNP Marker Panel Density
+The effect of marker panel density on genomic prediction performance was evaluated in the base population for **LBW** and **LSA**.
+
+The full panel of 4,680 SNPs was compared with reduced panels containing:
+* 4,000 SNPs
+* 3,000 SNPs
+* 2,000 SNPs
+* 1,000 SNPs
+* 500 SNPs
+
+For the reduced panels, markers were randomly selected while accounting for the total number of markers on each chromosome. An additional panel of the top 1,000 markers was selected based on GBLUP-derived SNP effects using the method described in the study methodology.
+
+<!-- CONFIRM: say whether the GBLUP SNP effects used to pick the top 1,000 markers were estimated within each training fold only. If they were estimated on all individuals before cross-validation, validation individuals influenced the marker choice and predictive ability is inflated. Add one sentence here stating which was done. -->
+
+### 6. Forward and Backward Genomic Prediction
+Forward and backward genomic prediction were evaluated between the base and F<sub>7</sub> populations for **LBW** and **LSA**.
+
+* **Forward Prediction:**
+  * **Training Population:** Base population
+  * **Prediction Population:** F<sub>7</sub> population
+* **Backward Prediction:**
+  * **Training Population:** F<sub>7</sub> population
+  * **Prediction Population:** Base population
+
+These analyses evaluated the transferability of genomic prediction between populations from different generations. They were run with GBLUP, BayesC and random forest.
+
+Phenotypes were adjusted separately within each population (see `FwdBwd_Prep.md`): base-population phenotypes for fixed effects of colour, sampling day, diet and tray (overall) or colour, sampling day and tray (within diet), and F<sub>7</sub> phenotypes for colour and tray.
+
+<!-- CONFIRM: the sentence above on which traits and which adjustment models are used in scenario 6 was written from the preparation script. Check that it matches the final analysis scripts. -->
+
+---
+
+## Genomic Prediction Methods & Implementation
 
 ### Evaluated Methods
-- **GBLUP:** Genomic Best Linear Unbiased Prediction fitted in **ASReml-R** (v4.2)
-- **Bayesian Alphabets:** **BayesA**, **BayesB**, **BayesC**, and **Bayesian Lasso (BayesL)** fitted via **BGLR**; **BayesR** fitted via **hibayes**
-- **Random Forest (RF):** 
-  - Fast univariate implementations via **ranger**
-  - Multivariate and joint multi-trait predictions via **randomForestSRC**
+* Genomic Best Linear Unbiased Prediction (**GBLUP**)
+* **BayesA**
+* **BayesBπ**
+* **BayesCπ**
+* **Bayesian Lasso**
+* **BayesR**
+* Random Forest (**RF**)
 
-### Genetic Effect Partitions
-- **Model A (Additive):** Incorporates additive genomic relationships ($\mathbf{G}$) or marker matrices ($\mathbf{X}_a$)
-- **Model AD (Additive + Dominance):** Jointly fits orthogonal additive ($\mathbf{G}_a$ / $\mathbf{X}_a$) and dominance relationship/marker matrices ($\mathbf{G}_d$ / $\mathbf{X}_d$) based on the classical Vitezica/Zhu parameterization
+Not every method was run in every scenario. Scenarios 1, 2 and 5 include all seven methods. Scenarios 3, 4 and 6 include GBLUP, BayesC and random forest only.
 
-### Hyperparameter Tuning
-For tree-based models, nested grid searches are evaluated using internal out-of-bag (OOB) error minimization across candidate grids:
-- `num.trees` / `ntree`: 150, 200, 300, 400
-- `mtry`: candidate subsets evaluated at $\lfloor\sqrt{p}\rfloor$, $\lfloor p/10\rfloor$, $\lfloor p/5\rfloor$, and $\lfloor p/3\rfloor$
-- `nodesize` / `min.node.size`: 5, 10
+Additive (**A**) and additive–dominance (**AD**) genetic effect models were evaluated where applicable. Dominance marker coding was checked with and without imputation of missing genotypes, and the results were nearly identical.
 
----
+<!-- CONFIRM: list which scenarios use the AD model and which use A only. -->
 
-## Phenotype Standardization & Validation Metrics
+### Model Implementation Details
+* **GBLUP:** Implemented in ASReml-R using additive and additive–dominance genomic relationship models.
+* **Bayesian Models:** BayesA, BayesBπ, BayesCπ and Bayesian Lasso were implemented using BGLR. BayesR was implemented using hibayes.
+* **Random Forest:** Univariate models were implemented using ranger, whereas multivariate models were implemented using randomForestSRC.
+* **Multivariate Prediction:** Multivariate GBLUP, BayesC and random forest approaches were used to account for genetic relationships between dietary environments.
 
-### Phenotypic Pre-Adjustment
-Phenotypes are pre-adjusted for non-genetic nuisance effects using linear models fitted in `asreml`, extracting residuals:
-- **Base Overall:** `Trait ~ Colour + Sampling_Day + Diet + Tray:Diet`
-- **Base Within-Diet:** `Trait ~ Colour + Sampling_Day + Tray + Tray:Sampling_Day`
-- **$F_7$ Overall:** `Trait ~ Colour + Tray`
+<!-- CONFIRM: BayesBπ and BayesCπ are the right names only if π was estimated (in BGLR this depends on the probIn and counts settings). Otherwise use BayesB and BayesC. -->
 
-### Validation Schemes
-- **5-Fold Cross-Validation (20 Replications):** Applied to Scenarios 1, 2, 3, and 5 using identical cross-validation partitioning folds across all methods
-- **Empirical Validation:** Fixed training/testing partitions applied to Cross-Diet (Scenario 4) and Inter-Generational transfers (Scenario 6)
+> **Note on Hyperparameters:** Random forest hyperparameters, including the number of trees (150, 300), node size (5, 10), and number of candidate split variables (mtry), were optimized within each training dataset using nested 5-fold cross-validation.
 
-### Evaluation Metrics
-1. **Predictive Ability (PA):** Pearson correlation coefficient between observed adjusted phenotypes ($y$) and genomic predictions ($\hat{g}$):
-   $$\text{PA} = r(y, \hat{g})$$
-2. **Prediction Scale Bias:** Linear regression coefficient ($\beta_1$) of observed phenotypes on predictions ($y = \beta_0 + \beta_1 \hat{g}$). $\beta_1 = 1.0$ indicates unbiased scaling; $\beta_1 < 1.0$ indicates variance inflation.
-3. **Mean Squared Error of Prediction (MSEP):** Mean squared difference between centered observed values and centered predictions:
-   $$\text{MSEP} = \frac{1}{n}\sum_{i=1}^{n}\Big((y_i - \bar{y}) - (\hat{g}_i - \bar{\hat{g}})\Big)^2$$
+<!-- CONFIRM: add the mtry values that were tried. -->
 
 ---
 
-## Repository Structure & Script Inventory
+## Validation & Evaluation Metrics
+
+Random 5-fold cross-validation was performed with 20 replications, except for cross-diet and forward/backward prediction, where the training and validation populations were predefined. The same cross-validation folds were used for all methods within each scenario.
+
+<!-- CONFIRM: the sentence about shared folds must be true for every scenario. -->
+
+Prediction performance was evaluated using three metrics:
+1. **Predictive Ability (PA):** Pearson correlation coefficient between adjusted phenotypes and genomic estimated breeding values (GEBVs) in the validation population.
+2. **Mean Squared Error of Prediction (MSEP):** Mean squared difference between adjusted phenotypes and GEBVs.
+3. **Prediction Scale Bias:** Regression slope of adjusted phenotypes on GEBVs in the validation population. A slope of 1 indicates no bias.
+
+---
+
+## Traits & Environments Summary
+
+### Traits Analysed
+* **LBW:** Larval body weight (mg)
+* **LL:** Larval length (mm)
+* **LW:** Larval width (mm)
+* **LSA:** Larval surface area (mm²)
+
+### Dietary Treatments
+* **SYK:** Soy-okara (base population)
+* **BSG:** Brewers' spent grain (base population)
+* **FVW:** Fruit and vegetable waste (base population)
+* **CSF:** Commercial chicken starter feed, 15.5% crude protein (F<sub>7</sub> population only)
+
+### Study Populations & Genotyping
+* **Base Population:** 2,083 individuals after genotype quality control, reared across three dietary environments (SYK, BSG, and FVW).
+* **F<sub>7</sub> Population:** 536 individuals after genotype quality control, from the seventh generation of the JCU breeding colony and reared on commercial chicken starter feed (CSF; 15.5% crude protein).
+
+Genotyping was performed using a custom-designed 6K Allegro targeted SNP panel. Following genotype quality control, 4,680 SNP markers were retained across both populations.
+
+---
+
+## Software & Packages
+
+* **R:** Data processing, genomic prediction, and statistical analyses
+* **PLINK:** Genotype quality control and population structure analysis
+* **ASReml-R:** GBLUP and genomic mixed models (requires a commercial licence)
+* **BGLR:** Bayesian genomic prediction models
+* **hibayes:** BayesR implementation
+* **ranger:** Univariate random forest models
+* **randomForestSRC:** Multivariate random forest models
+* **snpReady:** Additive genomic relationship matrix construction
+* **AGHmatrix:** Additive and dominance relationship matrices
+
+<!-- CONFIRM: add the R version and package versions used. -->
+
+---
+
+## Repository Structure
+
+Scripts are grouped by analysis scenario, one folder per scenario.
+
+| Folder | Scenario | Scripts |
+|---|---|---|
+| `1.Overall-base/` | 1. Genomic prediction in the base population (all diets pooled) | `BayesA_CV_overall.r`, `BayesB_CV_overall.r`, `BayesC_CV_overall.r`, `BayesL_CV_overall.r`, `BayesR_CV_overall.r`, `GBLUP_CV_overall.r`, `RF_CV_overall.r`; data preparation in `BasePop_Prep.md` |
+| `2.Diet-wise-base/` | 2. Within-diet genomic prediction (SYK, BSG and FVW analysed separately) | `BayesA_CV_dietwise.r`, `BayesB_CV_dietwise.r`, `BayesC_CV_dietwise.r`, `BayesL_CV_dietwise.r`, `BayesR_CV_dietwise.r`, `GBLUP_CV_dietwise.r`, `RF_CV_dietwise.r` |
+| `3.Multivariate-GxD/` | 3. Multivariate models accounting for genotype × diet interaction | `BayesC_CV_GxD.r`, `GBLUP_CV_GxD.r`, `RF_CV_GxD.r` |
+| `4.Cross-diet-base/` | 4. Cross-diet prediction | `BayesC_cross-diet.r`, `GBLUP_cross-diet.r`, `RF_cross-diet.r` |
+| `5.Panels-base/` | 5. SNP marker panel density (4,000 to 500 SNPs and the top 1,000 panel) | `BayesA_CV_Panels.r`, `BayesB_CV_Panels.r`, `BayesC_CV_Panels.r`, `BayesL_CV_Panels.r`, `BayesR_CV_Panels.r`, `GBLUP_CV_Panels.r`, `RF_CV_Panels.r`; panel construction in `Panels_input.md` |
+| `6.Forward-Backward/` | 6. Forward and backward prediction between the base and F<sub>7</sub> populations | Forward: `BayesC_Forward_Base-F7.r`, `GBLUP_Forward_Base-F7.r`, `RF_Forward_Base-F7.r`. Backward: `BayesC_Backward_F7-Base.r`, `GBLUP_Backward_F7-Base.r`, `RF_Backward_F7-Base.r`. Data preparation in `FwdBwd_Prep.md` |
+
+### Script naming
+
+| Scenario | Pattern |
+|---|---|
+| 1, 2, 3, 5 | `<Method>_CV_<scenario>.r` (`overall`, `dietwise`, `GxD`, `Panels`) |
+| 4 | `<Method>_cross-diet.r` |
+| 6 | `<Method>_Forward_Base-F7.r` and `<Method>_Backward_F7-Base.r` |
+
+The method names used in the files are:
+
+| Name in file | Method |
+|---|---|
+| `GBLUP` | GBLUP (ASReml-R) |
+| `BayesA`, `BayesB`, `BayesC`, `BayesL` | BayesA, BayesBπ, BayesCπ and Bayesian Lasso (BGLR) |
+| `BayesR` | BayesR (hibayes) |
+| `RF` | Random forest (ranger for univariate models, randomForestSRC for multivariate models) |
+
+### Suggested order to run
+
+1. Prepare the base population data (`1.Overall-base/BasePop_Prep.md`). Scenarios 1 to 5 use its output.
+2. For the panel scenario, build the marker panels and fold assignments first (`5.Panels-base/Panels_input.md`).
+3. For the forward and backward scenario, prepare the combined base and F<sub>7</sub> data (`6.Forward-Backward/FwdBwd_Prep.md`).
+4. Run the method scripts in each scenario folder. Scripts within a folder are independent of each other.
+
+<!-- CONFIRM: check that this order is right, and that scenarios 2 to 4 use the output of BasePop_Prep. -->
+
+---
+
+## Data Availability
+
+Raw genotype and phenotype datasets are not included in this repository.
+
+<!-- CONFIRM: add how to request the data, if it can be shared. -->

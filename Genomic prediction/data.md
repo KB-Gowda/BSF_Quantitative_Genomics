@@ -168,7 +168,7 @@ In every object, rows of the phenotype table and rows of all matrices are in the
 ## 6. Notes on use
 
 * **Diets are confounded with population.** The Base population has SYK, BSG and FVW; F<sub>7</sub> has CSF only. In forward and backward prediction, differences between the populations include both generation and diet.
-* **Trays are population-specific.** Tray codes (`B1` to `B9` for Base, `T1` to `T3` for F<sub>7</sub>) do not overlap, and the adjusted phenotypes are computed separately in each population.
+* **Trays are population-specific.** Tray codes (`B1` to `B3` `S1` to `S3` `V1` to `V3`for Base, `T1` to `T3` for F<sub>7</sub>) do not overlap, and the adjusted phenotypes are computed separately in each population.
 * **Combined file name.** The combined phenotype file `Pheno_BSF_2097_576.txt` is named for the 2,097 base and 576 F<sub>7</sub> phenotype records. Only 2,619 of them match a genotype after QC.
 * **Dominance and relationship matrices** are computed once on the full set of individuals, not within training folds.
 

@@ -194,7 +194,7 @@ The method names used in the files are:
 
 ### Suggested order to run
 
-1. Prepare the base population data (`1.Overall-base/BasePop_Prep.md`). Scenarios 1 to 5 use its output.
+1. Prepare the base population data (`1.Overall-base/BasePop_Prep.md`). Scenarios 1 to 4 use its output.
 2. For the panel scenario, build the marker panels and fold assignments first (`5.Panels-base/Panels_input.md`).
 3. For the forward and backward scenario, prepare the combined base and F<sub>7</sub> data (`6.Forward-Backward/FwdBwd_Prep.md`).
 4. Run the method scripts in each scenario folder. Scripts within a folder are independent of each other.

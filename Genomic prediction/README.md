@@ -4,7 +4,7 @@
 
 > If you use these scripts or find this work helpful, please cite our preprint:
 
-> **Gowda, K.B., Massault, C., Jerry, D.R. and Zenger, K.R.,** 2026. A genomic prediction framework for growth traits in black soldier fly (Hermetia illucens) breeding programmes. bioRxiv:2026.2011.2005.764768. https://doi.org/10.64898/2026.11.05.764768
+> **Gowda, K.B., Massault, C., Jerry, D.R. and Zenger, K.R.** 2026. A genomic prediction framework for growth traits in black soldier fly (Hermetia illucens) breeding programmes. bioRxiv:2026.2011.2005.764768. https://doi.org/10.64898/2026.11.05.764768
 ---
 
 This folder contains the analysis scripts used to evaluate genomic prediction methods for growth traits in black soldier fly larvae (*Hermetia illucens*). The analyses investigate prediction performance across dietary environments, genetic effect models, marker panel densities, and populations from different generations to develop a genomic prediction framework for BSF breeding.

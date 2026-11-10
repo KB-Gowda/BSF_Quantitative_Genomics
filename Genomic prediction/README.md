@@ -1,4 +1,4 @@
-# A genomic prediction framework for growth traits in black soldier fly (*Hermetia illucens*) breeding
+# A genomic prediction framework for growth traits in black soldier fly (*Hermetia illucens*) breeding programmes
 
 ## Citation
 

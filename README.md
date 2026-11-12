@@ -28,6 +28,7 @@ Chapters 3 and 4 will be added as they are completed. Each chapter folder has it
 ### Chapter 1: Genetic parameters and G × D interactions
 Estimates phenotypic variation, genetic parameters, genetic relationships and population structure for four larval growth traits, and tests for genotype-by-diet interaction across three diets.
 
+- **Data:** base population (2,083 individuals, three diets) genotyped with a custom 6K Allegro targeted SNP panel
 - **Traits:** larval body weight (LBW), length (LL), width (LW) and surface area (LSA)
 - **Diets:** soy-okara (SYK), brewers' spent grain (BSG), fruit and vegetable waste (FVW)
 - **Methods:** descriptive statistics and fixed-effect analysis in SAS. Genotype QC and PCA in PLINK. Additive and additive-dominance genomic mixed models, bivariate models and multivariate G × D models in ASReml-R. GEBV extraction and reaction-norm plots.
@@ -38,7 +39,8 @@ Estimates phenotypic variation, genetic parameters, genetic relationships and po
 ### Chapter 2: Genomic prediction
 Develops a genomic prediction framework for BSF growth traits across diets, genetic effect models, marker panel densities and generations.
 
-- **Data:** base population (2,083 individuals, three diets) and an F<sub>7</sub> population (536 individuals), genotyped with a custom 6K Allegro targeted SNP panel (4,680 SNPs after QC)
+- **Data:** base population (2,083 individuals, three diets) and an F<sub>7</sub> population (536 individuals), genotyped with a custom 6K Allegro targeted SNP panel
+- **Traits:** larval body weight (LBW), length (LL), width (LW) and surface area (LSA)
 - **Methods:** GBLUP, BayesA, BayesB, BayesC, Bayesian Lasso, BayesR and random forest, with additive and additive-dominance models
 - **Scenarios:** (1) overall base population, (2) within-diet, (3) multivariate G × D, (4) cross-diet, (5) SNP panel density, (6) forward and backward prediction between the base and F<sub>7</sub> populations
 - **Validation:** 5-fold cross-validation with 20 replicates. Predictive ability, mean squared error of prediction and prediction scale bias.
@@ -59,16 +61,16 @@ BSF_Quantitative_Genomics/
 
 ## Software
 
-- **R** with tidyverse, ggplot2, snpReady, AGHmatrix, BGLR, hibayes, ranger and randomForestSRC
-- **ASReml-R** (commercial licence required)
-- **SAS** (commercial licence required)
-- **PLINK** for genotype QC and PCA
+- **R** 
+- **ASReml-R**
+- **SAS** 
+- **PLINK** 
 
 Package and software versions are listed in each chapter folder.
 
 ## Data availability
 
-Raw genotype and phenotype datasets are not included in this repository because of file size and data-sharing restrictions. [Add how to request the data, if it can be shared.]
+Raw genotype and phenotype datasets are not included in this repository.
 
 ## Citation
 
@@ -77,7 +79,3 @@ If you use these scripts, please cite the chapter publication listed above, or t
 ## Contact
 
 **Kishor B. Gowda**, PhD Candidate, James Cook University, Townsville, Australia · [email] · [GitHub](https://github.com/KB-Gowda)
-
-## License
-
-[Choose a licence and add a `LICENSE` file, e.g. MIT for code.]

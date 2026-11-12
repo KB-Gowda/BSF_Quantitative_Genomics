@@ -4,7 +4,7 @@
 
 **Author:** Kishor B. Gowda, PhD Candidate, James Cook University (JCU), Townsville, Australia
 
-Code, analysis scripts and results for a quantitative genetics and genomics study of the black soldier fly (*Hermetia illucens*, BSF). The project links phenotypes, pedigree and genome-wide SNP data to understand the genetic basis of larval growth traits, and to support genetic improvement in BSF breeding programmes.
+Code, analysis scripts and results for a quantitative genetics and genomics study of the black soldier fly (*Hermetia illucens*, BSF). The project links phenotypes, and genome-wide SNP data to understand the genetic basis of larval growth traits, and to support genetic improvement in BSF breeding programmes.
 
 > **Status:** work in progress. Chapters 1 and 2 are available. Chapters 3 and 4 are in progress and will be added.
 

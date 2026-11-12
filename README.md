@@ -78,4 +78,4 @@ If you use these scripts, please cite the chapter publication listed above, or t
 
 ## Contact
 
-**Kishor B. Gowda**, PhD Candidate, James Cook University, Townsville, Australia · [email] · [GitHub](https://github.com/KB-Gowda)
+**Kishor B. Gowda**, PhD Candidate, James Cook University, Townsville, Australia · [kishorgowda.bommalingegowda@my.jcu.edu.au] · [GitHub](https://github.com/KB-Gowda)
